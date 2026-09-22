@@ -1,257 +1,899 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>NAITMOR // ARCHIVE</title>
+<title>NAITMOR // ARCHIVE</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            background: #08080b;
-            color: #d8d8df;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        .noise {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0.04;
-            background-image:
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    #ffffff 3px
-                );
-        }
+body {
+    margin: 0;
+    background:
+        radial-gradient(circle at 50% 20%, #16080b 0%, #08080b 35%, #040406 100%);
+    color: #d7d7df;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
 
-        header {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-        }
+/* ---------- BACKGROUND ---------- */
 
-        .terminal {
-            width: 100%;
-            max-width: 900px;
-            border: 1px solid #33333d;
-            background: #0d0d12;
-            box-shadow: 0 0 60px rgba(120, 0, 0, 0.15);
-        }
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            white 3px
+        );
+    z-index: 10;
+}
 
-        .topbar {
-            padding: 10px 15px;
-            border-bottom: 1px solid #33333d;
-            color: #777783;
-            font-size: 12px;
-            letter-spacing: 2px;
-        }
+body::after {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: #850b18;
+    filter: blur(180px);
+    opacity: 0.08;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
 
-        .content {
-            padding: 50px 30px;
-            text-align: center;
-        }
+/* ---------- LOADER ---------- */
 
-        .symbol {
-            font-size: 45px;
-            color: #8d0b18;
-            margin-bottom: 20px;
-        }
+#loader {
+    position: fixed;
+    inset: 0;
+    background: #050507;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: opacity 1s ease;
+}
 
-        h1 {
-            margin: 0;
-            font-size: clamp(42px, 10vw, 90px);
-            letter-spacing: 12px;
-            color: #eeeeF2;
-        }
+.loader-symbol {
+    color: #9d101e;
+    font-size: 50px;
+    animation: pulse 1.5s infinite;
+}
 
-        .subtitle {
-            margin-top: 15px;
-            color: #777783;
-            letter-spacing: 5px;
-            font-size: 13px;
-        }
+.loader-text {
+    margin-top: 20px;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #777780;
+}
 
-        .warning {
-            margin: 40px auto;
-            max-width: 600px;
-            padding: 15px;
-            border: 1px solid #292930;
-            color: #8d8d99;
-            font-size: 13px;
-            line-height: 1.6;
-        }
+@keyframes pulse {
+    0%,100% { opacity: .3; }
+    50% { opacity: 1; }
+}
 
-        .menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            max-width: 600px;
-            margin: 30px auto 0;
-        }
+/* ---------- MAIN ---------- */
 
-        button {
-            padding: 18px;
-            background: #111117;
-            border: 1px solid #34343d;
-            color: #cfcfd7;
-            cursor: pointer;
-            font-size: 13px;
-            letter-spacing: 2px;
-            transition: 0.2s;
-        }
+main {
+    position: relative;
+    z-index: 2;
+}
 
-        button:hover {
-            border-color: #8d0b18;
-            color: white;
-            background: #171117;
-        }
+section {
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+    padding: 80px 25px;
+}
 
-        #output {
-            display: none;
-            margin: 30px auto 0;
-            max-width: 600px;
-            padding: 20px;
-            border: 1px solid #8d0b18;
-            text-align: left;
-            line-height: 1.7;
-            color: #aaaab5;
-        }
+/* ---------- HERO ---------- */
 
-        .red {
-            color: #a10d1d;
-        }
+.hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
-        footer {
-            margin-top: 50px;
-            color: #4f4f58;
-            font-size: 11px;
-            letter-spacing: 2px;
-        }
+.hero-box {
+    width: 100%;
+    border: 1px solid #2d2d36;
+    background: rgba(10,10,14,.82);
+    box-shadow:
+        0 0 80px rgba(130,0,20,.08),
+        inset 0 0 40px rgba(255,255,255,.01);
+    padding: 70px 30px;
+    position: relative;
+}
 
-        @media (max-width: 600px) {
-            .menu {
-                grid-template-columns: 1fr;
-            }
+.corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: #87101b;
+    border-style: solid;
+}
 
-            .content {
-                padding: 40px 20px;
-            }
+.corner.tl {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+}
 
-            h1 {
-                letter-spacing: 6px;
-            }
-        }
-    </style>
+.corner.tr {
+    top: -1px;
+    right: -1px;
+    border-width: 1px 1px 0 0;
+}
+
+.corner.bl {
+    bottom: -1px;
+    left: -1px;
+    border-width: 0 0 1px 1px;
+}
+
+.corner.br {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 1px 1px 0;
+}
+
+.symbol {
+    color: #a40e1d;
+    font-size: 55px;
+    margin-bottom: 25px;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(45px, 12vw, 110px);
+    letter-spacing: 14px;
+    color: #f1f1f4;
+    text-shadow: 0 0 25px rgba(150,0,20,.25);
+}
+
+.subtitle {
+    margin-top: 15px;
+    letter-spacing: 7px;
+    font-size: 12px;
+    color: #73737e;
+}
+
+.status {
+    margin: 35px auto;
+    max-width: 500px;
+    padding: 14px;
+    border: 1px solid #292930;
+    font-family: monospace;
+    font-size: 12px;
+    color: #777783;
+}
+
+.status span {
+    color: #a40e1d;
+}
+
+.enter {
+    display: inline-block;
+    padding: 17px 35px;
+    border: 1px solid #77101a;
+    color: #d9d9df;
+    text-decoration: none;
+    letter-spacing: 3px;
+    font-size: 12px;
+    transition: .3s;
+}
+
+.enter:hover {
+    background: #77101a;
+    color: white;
+    box-shadow: 0 0 30px rgba(150,0,20,.25);
+}
+
+/* ---------- SECTION TITLE ---------- */
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.section-title h2 {
+    margin: 0;
+    font-size: 22px;
+    letter-spacing: 5px;
+}
+
+.section-title span {
+    color: #8f0d19;
+    font-family: monospace;
+}
+
+.line {
+    height: 1px;
+    flex: 1;
+    background: #292930;
+}
+
+/* ---------- CHARACTERS ---------- */
+
+.characters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.character {
+    padding: 25px;
+    border: 1px solid #28282f;
+    background: #0b0b0f;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.character::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: #8e0c18;
+    transform: scaleY(0);
+    transition: .3s;
+}
+
+.character:hover {
+    border-color: #65101a;
+    transform: translateY(-3px);
+    background: #0e0d12;
+}
+
+.character:hover::before {
+    transform: scaleY(1);
+}
+
+.character-id {
+    color: #575761;
+    font-family: monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.character h3 {
+    margin: 12px 0 8px;
+    color: #eeeeF2;
+    letter-spacing: 2px;
+}
+
+.character p {
+    margin: 0;
+    color: #777783;
+    font-size: 13px;
+}
+
+/* ---------- DATABASE ---------- */
+
+.database {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.db-card {
+    border: 1px solid #292930;
+    background: #0a0a0e;
+    padding: 30px;
+    transition: .3s;
+}
+
+.db-card:hover {
+    border-color: #71101a;
+}
+
+.db-card h3 {
+    margin-top: 0;
+    letter-spacing: 3px;
+}
+
+.db-card p {
+    color: #777783;
+    line-height: 1.7;
+    font-size: 13px;
+}
+
+/* ---------- MUSIC ---------- */
+
+.music-list {
+    border: 1px solid #292930;
+}
+
+.album {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px;
+    border-bottom: 1px solid #202027;
+    transition: .2s;
+}
+
+.album:last-child {
+    border-bottom: none;
+}
+
+.album:hover {
+    background: #101015;
+}
+
+.album-name {
+    letter-spacing: 3px;
+}
+
+.album-status {
+    color: #65101a;
+    font-family: monospace;
+    font-size: 10px;
+}
+
+/* ---------- CLASSIFIED ---------- */
+
+.classified {
+    border: 1px solid #70101a;
+    padding: 40px;
+    text-align: center;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #0b090c,
+            #0b090c 10px,
+            #0d0b0e 10px,
+            #0d0b0e 20px
+        );
+}
+
+.classified h2 {
+    letter-spacing: 5px;
+}
+
+.classified p {
+    color: #666671;
+    font-family: monospace;
+}
+
+.secret-button {
+    margin-top: 20px;
+    padding: 13px 25px;
+    background: transparent;
+    border: 1px solid #70101a;
+    color: #9d101e;
+    cursor: pointer;
+    letter-spacing: 2px;
+}
+
+.secret-button:hover {
+    background: #70101a;
+    color: white;
+}
+
+/* ---------- FOOTER ---------- */
+
+footer {
+    padding: 50px 20px;
+    text-align: center;
+    border-top: 1px solid #18181e;
+    color: #45454e;
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+/* ---------- MODAL ---------- */
+
+#modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.85);
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-box {
+    max-width: 600px;
+    width: 100%;
+    background: #0c0c11;
+    border: 1px solid #71101a;
+    padding: 35px;
+    box-shadow: 0 0 60px rgba(120,0,20,.15);
+}
+
+.modal-box h2 {
+    margin-top: 0;
+    letter-spacing: 3px;
+}
+
+.modal-box p {
+    color: #888894;
+    line-height: 1.8;
+}
+
+.close {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid #33333b;
+    color: #aaa;
+    cursor: pointer;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media(max-width:700px) {
+
+    section {
+        padding: 60px 15px;
+    }
+
+    .hero-box {
+        padding: 55px 18px;
+    }
+
+    h1 {
+        letter-spacing: 7px;
+    }
+
+    .characters,
+    .database {
+        grid-template-columns: 1fr;
+    }
+
+    .album {
+        gap: 15px;
+    }
+
+    .classified {
+        padding: 30px 20px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<div class="noise"></div>
+<!-- LOADER -->
 
-<header>
+<div id="loader">
+    <div class="loader-symbol">†</div>
+    <div class="loader-text">
+        CONNECTING TO NOCTIS ARCHIVE...
+    </div>
+</div>
 
-    <main class="terminal">
+<main>
 
-        <div class="topbar">
-            NAITMOR SYSTEM // ARCHIVE NODE 001
+<!-- HERO -->
+
+<section class="hero" id="top">
+
+    <div class="hero-box">
+
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+
+        <div class="symbol">†</div>
+
+        <h1>NAITMOR</h1>
+
+        <div class="subtitle">
+            ARCHIVE // NOCTIS
         </div>
 
-        <div class="content">
+        <div class="status">
+            SYSTEM STATUS:
+            <span>ONLINE</span><br><br>
+            ARCHIVE NODE: 001<br>
+            ACCESS LEVEL: UNKNOWN
+        </div>
 
-            <div class="symbol">†</div>
+        <a href="#characters" class="enter">
+            ENTER THE ARCHIVE
+        </a>
 
-            <h1>NAITMOR</h1>
+    </div>
 
-            <div class="subtitle">
-                ARCHIVE // NOCTIS
+</section>
+
+
+<!-- CHARACTERS -->
+
+<section id="characters">
+
+    <div class="section-title">
+        <span>//01</span>
+        <h2>CHARACTERS</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="characters">
+
+        <div class="character"
+             onclick="openCharacter('HELLKA')">
+
+            <div class="character-id">
+                ENTITY // 001
             </div>
 
-            <div class="warning">
-                <span class="red">WARNING:</span><br>
-                Доступ к архиву разрешён.<br>
-                Последствия ознакомления с содержимым
-                не предусмотрены.
-            </div>
+            <h3>HELLKA</h3>
 
-            <div class="menu">
-
-                <button onclick="showMessage('CHARACTERS')">
-                    CHARACTERS
-                </button>
-
-                <button onclick="showMessage('LORE')">
-                    LORE
-                </button>
-
-                <button onclick="showMessage('MUSIC')">
-                    MUSIC
-                </button>
-
-                <button onclick="showMessage('CLASSIFIED')">
-                    CLASSIFIED
-                </button>
-
-            </div>
-
-            <div id="output"></div>
-
-            <footer>
-                © NAITMOR // NOCTIS ARCHIVE
-            </footer>
+            <p>
+                Чертовка. Дерзкая, опасная
+                и совершенно не заинтересованная
+                в чужом мнении.
+            </p>
 
         </div>
 
-    </main>
 
-</header>
+        <div class="character"
+             onclick="openCharacter('KAYA')">
+
+            <div class="character-id">
+                ENTITY // 002
+            </div>
+
+            <h3>KAYA NAKAMURA</h3>
+
+            <p>
+                Девятихвостая кровавая кицунэ.
+                Улыбается даже тогда,
+                когда лучше бежать.
+            </p>
+
+        </div>
+
+
+        <div class="character"
+             onclick="openCharacter('SEVERINA')">
+
+            <div class="character-id">
+                ENTITY // 003
+            </div>
+
+            <h3>SEVERINA BLACKWOOD</h3>
+
+            <p>
+                Вампирша, связанная
+                с оккультными знаниями
+                и древними тайнами.
+            </p>
+
+        </div>
+
+
+        <div class="character"
+             onclick="openCharacter('AMELIA')">
+
+            <div class="character-id">
+                ENTITY // 004
+            </div>
+
+            <h3>AMELIA LAVERT</h3>
+
+            <p>
+                Сущность, сочетающая
+                природу суккуба и вампира.
+            </p>
+
+        </div>
+
+
+        <div class="character"
+             onclick="openCharacter('ELARA')">
+
+            <div class="character-id">
+                ENTITY // 005
+            </div>
+
+            <h3>ELARA GRIMWOOD</h3>
+
+            <p>
+                Ведьма-экспериментатор.
+                Её исследования лучше
+                не оставлять без присмотра.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- LORE -->
+
+<section>
+
+    <div class="section-title">
+        <span>//02</span>
+        <h2>LORE DATABASE</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="database">
+
+        <div class="db-card">
+            <h3>WORLD</h3>
+            <p>
+                Мир NAITMOR хранит гораздо больше
+                историй, чем способен выдержать
+                обычный человек.
+            </p>
+        </div>
+
+        <div class="db-card">
+            <h3>ENTITIES</h3>
+            <p>
+                Существа, ведьмы, вампиры,
+                чертовки и другие обитатели
+                мира занесены в архив.
+            </p>
+        </div>
+
+        <div class="db-card">
+            <h3>LOCATIONS</h3>
+            <p>
+                Некоторые места существуют
+                только после наступления ночи.
+            </p>
+        </div>
+
+        <div class="db-card">
+            <h3>EVENTS</h3>
+            <p>
+                Хронология событий находится
+                в процессе восстановления.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- MUSIC -->
+
+<section>
+
+    <div class="section-title">
+        <span>//03</span>
+        <h2>MUSIC ARCHIVE</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="music-list">
+
+        <div class="album">
+            <div class="album-name">
+                BESTIARY
+            </div>
+
+            <div class="album-status">
+                ARCHIVED
+            </div>
+        </div>
+
+        <div class="album">
+            <div class="album-name">
+                VENATRIX
+            </div>
+
+            <div class="album-status">
+                ARCHIVED
+            </div>
+        </div>
+
+        <div class="album">
+            <div class="album-name">
+                DOMINUS NOCTIS
+            </div>
+
+            <div class="album-status">
+                ARCHIVED
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CLASSIFIED -->
+
+<section>
+
+    <div class="section-title">
+        <span>//04</span>
+        <h2>CLASSIFIED</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="classified">
+
+        <h2>████████████</h2>
+
+        <p>
+            ACCESS LEVEL: INSUFFICIENT
+        </p>
+
+        <p>
+            Some information has been
+            deliberately removed.
+        </p>
+
+        <button class="secret-button"
+                onclick="secretMessage()">
+            ATTEMPT ACCESS
+        </button>
+
+    </div>
+
+</section>
+
+
+<footer>
+    NAITMOR // NOCTIS ARCHIVE<br><br>
+    SYSTEM NODE 001
+</footer>
+
+</main>
+
+
+<!-- MODAL -->
+
+<div id="modal">
+
+    <div class="modal-box">
+
+        <h2 id="modal-title"></h2>
+
+        <p id="modal-text"></p>
+
+        <button class="close"
+                onclick="closeModal()">
+            CLOSE ARCHIVE
+        </button>
+
+    </div>
+
+</div>
+
 
 <script>
 
-function showMessage(section) {
+/* LOADER */
 
-    const output = document.getElementById("output");
+window.addEventListener("load", function() {
 
-    const messages = {
+    setTimeout(function() {
 
-        CHARACTERS:
-        "<strong>CHARACTER ARCHIVE</strong><br><br>" +
-        "HELLKA — чертовка.<br>" +
-        "KAYA NAKAMURA — девятихвостая кровавая кицунэ.<br>" +
-        "SEVERINA BLACKWOOD — вампирша оккультист.<br>" +
-        "LILITH — █████████████.",
+        const loader =
+            document.getElementById("loader");
 
-        LORE:
-        "<strong>LORE DATABASE</strong><br><br>" +
-        "Архив содержит сведения о мире NAITMOR. " +
-        "Некоторые страницы были удалены. " +
-        "Некоторые никогда не существовали.",
+        loader.style.opacity = "0";
 
-        MUSIC:
-        "<strong>MUSIC ARCHIVE</strong><br><br>" +
-        "BESTIARY<br>" +
-        "VENATRIX<br>" +
-        "DOMINUS NOCTIS<br><br>" +
-        "Новые записи находятся в процессе загрузки.",
+        setTimeout(function() {
+            loader.style.display = "none";
+        }, 1000);
 
-        CLASSIFIED:
-        "<strong>ACCESS DENIED</strong><br><br>" +
-        "Для доступа требуется уровень допуска: █████.<br>" +
-        "Попробуйте вернуться позже."
+    }, 1200);
+
+});
+
+
+/* CHARACTERS */
+
+function openCharacter(character) {
+
+    const title =
+        document.getElementById("modal-title");
+
+    const text =
+        document.getElementById("modal-text");
+
+    const modal =
+        document.getElementById("modal");
+
+    const data = {
+
+        HELLKA: {
+            title: "HELLKA // ENTITY 001",
+            text:
+            "ЧЕРТОВКА. Дерзкая, язвительная " +
+            "и непредсказуемая. Один из наиболее " +
+            "известных субъектов архива."
+        },
+
+        KAYA: {
+            title: "KAYA NAKAMURA // ENTITY 002",
+            text:
+            "Девятихвостая кровавая кицунэ. " +
+            "Опасность уровня, который архив " +
+            "предпочитает не обсуждать."
+        },
+
+        SEVERINA: {
+            title: "SEVERINA BLACKWOOD // ENTITY 003",
+            text:
+            "Вампирша, связанная с оккультными " +
+            "исследованиями и древними знаниями."
+        },
+
+        AMELIA: {
+            title: "AMELIA LAVERT // ENTITY 004",
+            text:
+            "Сущность с природой суккуба и вампира. " +
+            "Дополнительные данные находятся " +
+            "под ограничением."
+        },
+
+        ELARA: {
+            title: "ELARA GRIMWOOD // ENTITY 005",
+            text:
+            "Ведьма-экспериментатор. Архив содержит " +
+            "несколько предупреждений относительно " +
+            "её исследований."
+        }
+
     };
 
-    output.innerHTML = messages[section];
-    output.style.display = "block";
+    title.innerText = data[character].title;
+    text.innerText = data[character].text;
+
+    modal.style.display = "flex";
+}
+
+
+function closeModal() {
+
+    document.getElementById("modal")
+        .style.display = "none";
+
+}
+
+
+/* SECRET */
+
+function secretMessage() {
+
+    alert(
+        "ACCESS DENIED.\n\n" +
+        "Но архив запомнил ваш запрос."
+    );
 
 }
 

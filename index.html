@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NAITMOR // ARCHIVE</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #08080b;
+            color: #d8d8df;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .noise {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.04;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    #ffffff 3px
+                );
+        }
+
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .terminal {
+            width: 100%;
+            max-width: 900px;
+            border: 1px solid #33333d;
+            background: #0d0d12;
+            box-shadow: 0 0 60px rgba(120, 0, 0, 0.15);
+        }
+
+        .topbar {
+            padding: 10px 15px;
+            border-bottom: 1px solid #33333d;
+            color: #777783;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .content {
+            padding: 50px 30px;
+            text-align: center;
+        }
+
+        .symbol {
+            font-size: 45px;
+            color: #8d0b18;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(42px, 10vw, 90px);
+            letter-spacing: 12px;
+            color: #eeeeF2;
+        }
+
+        .subtitle {
+            margin-top: 15px;
+            color: #777783;
+            letter-spacing: 5px;
+            font-size: 13px;
+        }
+
+        .warning {
+            margin: 40px auto;
+            max-width: 600px;
+            padding: 15px;
+            border: 1px solid #292930;
+            color: #8d8d99;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-width: 600px;
+            margin: 30px auto 0;
+        }
+
+        button {
+            padding: 18px;
+            background: #111117;
+            border: 1px solid #34343d;
+            color: #cfcfd7;
+            cursor: pointer;
+            font-size: 13px;
+            letter-spacing: 2px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            border-color: #8d0b18;
+            color: white;
+            background: #171117;
+        }
+
+        #output {
+            display: none;
+            margin: 30px auto 0;
+            max-width: 600px;
+            padding: 20px;
+            border: 1px solid #8d0b18;
+            text-align: left;
+            line-height: 1.7;
+            color: #aaaab5;
+        }
+
+        .red {
+            color: #a10d1d;
+        }
+
+        footer {
+            margin-top: 50px;
+            color: #4f4f58;
+            font-size: 11px;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 600px) {
+            .menu {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                letter-spacing: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="noise"></div>
+
+<header>
+
+    <main class="terminal">
+
+        <div class="topbar">
+            NAITMOR SYSTEM // ARCHIVE NODE 001
+        </div>
+
+        <div class="content">
+
+            <div class="symbol">†</div>
+
+            <h1>NAITMOR</h1>
+
+            <div class="subtitle">
+                ARCHIVE // NOCTIS
+            </div>
+
+            <div class="warning">
+                <span class="red">WARNING:</span><br>
+                Доступ к архиву разрешён.<br>
+                Последствия ознакомления с содержимым
+                не предусмотрены.
+            </div>
+
+            <div class="menu">
+
+                <button onclick="showMessage('CHARACTERS')">
+                    CHARACTERS
+                </button>
+
+                <button onclick="showMessage('LORE')">
+                    LORE
+                </button>
+
+                <button onclick="showMessage('MUSIC')">
+                    MUSIC
+                </button>
+
+                <button onclick="showMessage('CLASSIFIED')">
+                    CLASSIFIED
+                </button>
+
+            </div>
+
+            <div id="output"></div>
+
+            <footer>
+                © NAITMOR // NOCTIS ARCHIVE
+            </footer>
+
+        </div>
+
+    </main>
+
+</header>
+
+<script>
+
+function showMessage(section) {
+
+    const output = document.getElementById("output");
+
+    const messages = {
+
+        CHARACTERS:
+        "<strong>CHARACTER ARCHIVE</strong><br><br>" +
+        "HELLKA — чертовка.<br>" +
+        "KAYA NAKAMURA — девятихвостая кровавая кицунэ.<br>" +
+        "SEVERINA BLACKWOOD — вампирша оккультист.<br>" +
+        "LILITH — █████████████.",
+
+        LORE:
+        "<strong>LORE DATABASE</strong><br><br>" +
+        "Архив содержит сведения о мире NAITMOR. " +
+        "Некоторые страницы были удалены. " +
+        "Некоторые никогда не существовали.",
+
+        MUSIC:
+        "<strong>MUSIC ARCHIVE</strong><br><br>" +
+        "BESTIARY<br>" +
+        "VENATRIX<br>" +
+        "DOMINUS NOCTIS<br><br>" +
+        "Новые записи находятся в процессе загрузки.",
+
+        CLASSIFIED:
+        "<strong>ACCESS DENIED</strong><br><br>" +
+        "Для доступа требуется уровень допуска: █████.<br>" +
+        "Попробуйте вернуться позже."
+    };
+
+    output.innerHTML = messages[section];
+    output.style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>
